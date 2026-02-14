@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Plus, ArrowRight, Trophy, Target, TrendingUp, Award, BarChart3 } from 'lucide-react';
+import { Plus, ArrowRight, BarChart3 } from 'lucide-react';
 
 const BiliardoApp = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -309,20 +309,6 @@ const BiliardoApp = () => {
   const calculateStats = (player) => {
     const accuracy = player.shots > 0 ? ((player.pocketed / player.shots) * 100).toFixed(1) : 0;
     return { accuracy };
-  };
-
-  const calculateGlobalStats = (playerName) => {
-    const stats = globalStats[playerName];
-    if (!stats) return null;
-    
-    const accuracy = stats.totalShots > 0 
-      ? ((stats.totalPocketed / stats.totalShots) * 100).toFixed(1) 
-      : 0;
-    const winRate = stats.gamesPlayed > 0 
-      ? ((stats.gamesWon / stats.gamesPlayed) * 100).toFixed(1) 
-      : 0;
-    
-    return { ...stats, accuracy, winRate };
   };
 
   const formatTime = (seconds) => {
@@ -1815,9 +1801,6 @@ const BiliardoApp = () => {
     
     const allBallsPocketed = remainingBalls.solid.length === 0 && remainingBalls.striped.length === 0;
     
-    // Per Trio FFA: controlla se il giocatore corrente ha imbucato tutte le 14 palle
-    const currentPlayerCanPocket8 = selectedMode === 'trio-ffa' && allBallsPocketed;
-    
     // Per Palla 9: trova la palla più bassa
     const lowestBall = (selectedMode === 'trio-ball9' || selectedMode === 'duo-ball9') ? Math.min(...ball9Remaining) : null;
     
@@ -1890,7 +1873,7 @@ const BiliardoApp = () => {
                       }`}
                       style={{
                         backgroundColor: ball === 9 ? '#FFD700' : getBallColor(ball),
-                        color: (ball >= 5 && ball <= 7 || ball === 8) ? 'white' : 'black',
+                        color: ((ball >= 5 && ball <= 7) || ball === 8) ? 'white' : 'black',
                         border: '2px solid #333'
                       }}
                     >
@@ -1936,7 +1919,7 @@ const BiliardoApp = () => {
                           className="w-16 h-16 rounded-full font-bold text-2xl transition transform hover:scale-110 shadow-xl relative flex items-center justify-center overflow-hidden"
                           style={{
                             backgroundColor: getBallColor(ball),
-                            color: (ball >= 5 && ball <= 7 || ball === 8) ? 'white' : 'black',
+                            color: ((ball >= 5 && ball <= 7) || ball === 8) ? 'white' : 'black',
                             border: '2px solid #333'
                           }}
                         >
@@ -2046,7 +2029,7 @@ const BiliardoApp = () => {
                       className="aspect-square rounded-full font-bold text-2xl transition transform hover:scale-110 shadow-xl relative flex items-center justify-center overflow-hidden"
                       style={{
                         backgroundColor: ballType === 'solid' ? getBallColor(ball) : 'white',
-                        color: ballType === 'solid' && (ball >= 5 && ball <= 7 || ball === 8) ? 'white' : 'black',
+                        color: ballType === 'solid' && ((ball >= 5 && ball <= 7) || ball === 8) ? 'white' : 'black',
                         border: '2px solid #333'
                       }}
                     >
